@@ -2,7 +2,8 @@
 "Author"   = 'Enter your name'
 "Version"  = 'The version of the grammar and/or language'
 "About"    = 'A short description of the grammar'
-
+           
+"Case Sensitive" = True
 "Start Symbol" = <Start>
 
 ! -------------------------------------------------
@@ -22,8 +23,13 @@
 
 Whitespace    = {WS}+
 NewLine       = {CR}{LF} | {CR} | {LF}
-
-Identifier    = {Letter}{AlphaNumeric}*
+              
+{Id Head}        = {Letter} + [_]
+{Id Tail}        = {Id Head} + {Digit}
+Identifier    = {Id Head}{Id Tail}*
+              
+DecimalLiteral = {Digit}+              
+RealLiteral = {Digit}+'.'{Digit}+
 StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
 
 ! -------------------------------------------------
@@ -37,24 +43,146 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
           |  NewLine
 
 <nl Opt> ::= NewLine <nl Opt>      !Zero or more
-          |  !Empty
+          |  <>
 
 ! <nl opt> removes blank lines before first statement
 
-<Start>   ::= <nl opt> <Program>
+<Start>   ::= <nl opt> <Program> <Start>
+           | <>
 
-<Program> ::= 
+<Program> ::= <Var Decl>
+!           | <Func Decl>
+           
 
-<Expression>  ::= <Expression> '+' <Mult Exp> 
-               |  <Expression> '-' <Mult Exp> 
-               |  <Mult Exp> 
 
-<Mult Exp>    ::= <Mult Exp> '*' <Negate Exp> 
-               |  <Mult Exp> '/' <Negate Exp> 
-               |  <Negate Exp> 
+! ===================================================================
+! Types
+! ===================================================================
 
-<Negate Exp>  ::= '-' <Value> 
-               |  <Value> 
+<Type> ::= boolean 
+        | <Scalar>
+        | string
+        
+<Scalar> ::= int
+          | real
+          
+! ===================================================================
+! Variable Declaration
+! ===================================================================
+
+<Var Decl>  ::= <Mod> '{' <TypedVariable> '}'
+             |  <Mod> '{' <nl opt> <TypedVariable> '}'
+             |  <Mod> '{' <nl opt> <TypedVariable> <nl opt> '}'
+             |  <Mod> '{' <TypedVariable> <nl opt> '}'
+             
+             
+<TypedVariable> ::= <Type> <Variables> ';'
+                 |  <Type> <Variables> ';' <nl opt>
+                 |  <TypedVariable> <Type> <Variables> ';'
+                 |  <TypedVariable> <Type> <Variables> ';' <nl opt>
+
+
+<Variables> ::= <VariableDeclarator>
+              |  <Variables> ',' <VariableDeclarator> 
+              |  <Variables> ',' <nl opt> <VariableDeclarator>
+
+               
+<VariableDeclarator> ::= Identifier
+                      | Identifier '=' <VariableInit>
+              
+        
+<VariableInit> ::= <Expression>
+               
+
+<Mod> ::= var
+       | const         
+
+              
+! ===================================================================
+! Function  Declaration
+! ===================================================================
+
+<Func Decl>  ::= <Func ID> '(' <Params>  ')' 
+               | <Func ID> '(' <Id List> ')'
+               | <Func ID> '(' ')'
+
+
+<Params>     ::= <Param> ',' <Params>
+               | <Param>
+               
+<Param>      ::= <Type> Identifier
+               
+<Types>      ::= <Type>  ',' <Types>
+               | <Type> 
+   
+<Id List>    ::= Identifier ',' <Id List>
+               | Identifier
+
+<Func ID>    ::= <Type> Identifier 
+                     
+
+! ===================================================================
+! Expression  Declaration
+! ===================================================================
+
+<Expression> ::= <OrExpression>
+               
+<OrExpression> ::= <OrExpression> '||' <AndExpression>
+                | <AndExpression>
+
+<AndExpression> ::= <AndExpression> '&&' <EqualityExpression>
+                 | <EqualityExpression>
+                 
+<EqualityExpression> ::= <EqualityExpression> '==' <CompareExpression>
+                       | <EqualityExpression> '!=' <CompareExpression>
+                       | <CompareExpression>
+                       
+<CompareExpression> ::= <CompareExpression> '<'  <AddExpression>
+                     | <CompareExpression> '>'  <AddExpression>
+                     | <CompareExpression> '<=' <AddExpression>
+                     | <CompareExpression> '>=' <AddExpression>
+                     | <AddExpression>
+        
+<AddExpression> ::= <AddExpression> '+' <MultiplicationExpression>
+                 | <AddExpression> '-' <MultiplicationExpression>
+                 | <MultiplicationExpression>
+
+<MultiplicationExpression> ::= <MultiplicationExpression> '*' <UnaryExpression> 
+                            | <MultiplicationExpression> '/' <UnaryExpression> 
+                            | <UnaryExpression>
+        
+<UnaryExpression> ::= '!' <UnaryExpression>
+                   | <ObjectExpression>
+                  
+<ObjectExpression> ::= <MethodExpression>
+                   ! | <PrimaryArrayCreationExpression>
+                    
+                       
+! <PrimaryArrayCreationExpression> ::= <>!Empty
+                      
+            
+<MethodExpression> ::= <PrimaryExpression>
+                    
+<PrimaryExpression> ::= <Primary>
+                     | '(' <Expression> ')'
+                     
+<Primary> ::= <ValidIdentifier>
+           | <Literal>
+           
+
+<ValidIdentifier> ::= Identifier
+                   | <Type>
+                    
+! ===================================================================
+! Literals
+! ===================================================================
+
+<Literal> ::= true
+            | false
+            | DecimalLiteral
+            | RealLiteral
+            | StringLiteral
+
 
 !Add more values to the rule below - as needed
 
