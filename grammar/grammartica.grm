@@ -55,13 +55,14 @@ Comment End = '*/'
 
 ! <nl opt> removes blank lines before first statement
 
-<Start>   ::= <nl opt> <Program> <Start>
-           | <>
+<Start>   ::= <nl opt> <Program> <Start> <nl opt>
+           
 
 <Program> ::= <Var Decl>
            | <Expression>
-!           | <Func Decl>
-            | <Struct Decl>
+           | <nl opt>
+!          | <Func Decl>
+           | <Struct Decl>
 
 ! ===================================================================
 ! Types
@@ -221,11 +222,11 @@ Comment End = '*/'
 ! While Loop
 ! ===================================================================
 
-<While> ::= 'while' '(' <Expression> ')' <Statement>
+! <While> ::= 'while' '(' <Expression> ')' <Statement>
          
 ! ===================================================================
 ! If-Else
 ! ===================================================================
 
-<if> ::= | if '(' <Expression> ')' <Statement>
-         | if '(' <Expression> ')' <Statement> else <Statement>           
+!<if> ::= | if '(' <Expression> ')' <Statement>
+!         | if '(' <Expression> ')' <Statement> else <Statement>           
