@@ -31,6 +31,14 @@ Identifier    = {Id Head}{Id Tail}*
 DecimalLiteral = {Digit}+              
 RealLiteral = {Digit}+'.'{Digit}+
 StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
+              
+
+! ----------------------------------------------------------------- Comments
+
+Comment Line = '//'
+Comment Start = '/*'
+Comment End = '*/'
+
 
 ! -------------------------------------------------
 ! Rules
@@ -51,6 +59,7 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
            | <>
 
 <Program> ::= <Var Decl>
+           | <Expression>
 !           | <Func Decl>
            
 
@@ -77,9 +86,8 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
              
              
 <TypedVariable> ::= <Type> <Variables> ';'
-                 |  <Type> <Variables> ';' <nl opt>
                  |  <TypedVariable> <Type> <Variables> ';'
-                 |  <TypedVariable> <Type> <Variables> ';' <nl opt>
+                 |  <TypedVariable> <nl opt> <Type> <Variables> ';'
 
 
 <Variables> ::= <VariableDeclarator>
@@ -182,9 +190,3 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
             | DecimalLiteral
             | RealLiteral
             | StringLiteral
-
-
-!Add more values to the rule below - as needed
-
-<Value>       ::= Identifier            
-               |  '(' <Expression> ')'
