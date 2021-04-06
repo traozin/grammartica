@@ -202,3 +202,9 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
 
 <Value>       ::= Identifier            
                |  '(' <Expression> ')'
+
+! ===================================================================
+! While Loop
+! ===================================================================
+
+<While> ::= 'while' '(' <Expression> ')' <Statement>
