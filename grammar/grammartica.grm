@@ -171,7 +171,21 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
            
 
 <ValidIdentifier> ::= Identifier
-                   | <Type>
+                   | <Type> 
+                   
+!<Expression> ::= <expressionsLogics> 
+!          |
+          
+!<expressionsLogics> ::= <expressionLogic><operetorsLogics><expressionsLogicsAux> 
+!                     | <operetorsLogics><expressionLogic>
+!                     | <expressionLogic>
+                     
+!<expressionsLogicsAux> ::= <expressionsLogics>                 
+!<operetorsLogics> ::= '&&' | '||'
+!<expressionLogic> ::= '!'<expressionsBoolean>
+!                  | <expressionsBoolean> 
+                   
+!<expressionsBoolean> ::= 'true'|'false'|Identifier   
                     
 ! ===================================================================
 ! Literals
