@@ -52,8 +52,7 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
 
 <Program> ::= <Var Decl>
 !           | <Func Decl>
-           
-
+            | <Struct Decl>
 
 ! ===================================================================
 ! Types
@@ -97,7 +96,15 @@ StringLiteral = '"' ( {String Chars} | '\' {Printable} )* '"'
 <Mod> ::= var
        | const         
 
-              
+! ===================================================================
+! Struct  Declaration
+! ===================================================================
+
+<Struct Decl> ::= typedef struct '{' <Struct Def> '}' Identifier ';'
+
+<Struct Def> ::= <Var Decl> <nl opt> <Struct Def>
+               | <Var Decl> <nl opt>
+        
 ! ===================================================================
 ! Function  Declaration
 ! ===================================================================
