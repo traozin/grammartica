@@ -61,8 +61,7 @@ Comment End = '*/'
 <Program> ::= <Var Decl>
            | <Expression>
 !           | <Func Decl>
-           
-
+            | <Struct Decl>
 
 ! ===================================================================
 ! Types
@@ -105,7 +104,15 @@ Comment End = '*/'
 <Mod> ::= var
        | const         
 
-              
+! ===================================================================
+! Struct  Declaration
+! ===================================================================
+
+<Struct Decl> ::= typedef struct '{' <Struct Def> '}' Identifier ';'
+
+<Struct Def> ::= <Var Decl> <nl opt> <Struct Def>
+               | <Var Decl> <nl opt>
+        
 ! ===================================================================
 ! Function  Declaration
 ! ===================================================================
@@ -179,7 +186,21 @@ Comment End = '*/'
            
 
 <ValidIdentifier> ::= Identifier
-                   | <Type>
+                   | <Type> 
+                   
+!<Expression> ::= <expressionsLogics> 
+!          |
+          
+!<expressionsLogics> ::= <expressionLogic><operetorsLogics><expressionsLogicsAux> 
+!                     | <operetorsLogics><expressionLogic>
+!                     | <expressionLogic>
+                     
+!<expressionsLogicsAux> ::= <expressionsLogics>                 
+!<operetorsLogics> ::= '&&' | '||'
+!<expressionLogic> ::= '!'<expressionsBoolean>
+!                  | <expressionsBoolean> 
+                   
+!<expressionsBoolean> ::= 'true'|'false'|Identifier   
                     
 ! ===================================================================
 ! Literals
@@ -190,3 +211,21 @@ Comment End = '*/'
             | DecimalLiteral
             | RealLiteral
             | StringLiteral
+
+!Add more values to the rule below - as needed
+
+<Value>       ::= Identifier            
+               |  '(' <Expression> ')'
+
+! ===================================================================
+! While Loop
+! ===================================================================
+
+<While> ::= 'while' '(' <Expression> ')' <Statement>
+         
+! ===================================================================
+! If-Else
+! ===================================================================
+
+<if> ::= | if '(' <Expression> ')' <Statement>
+         | if '(' <Expression> ')' <Statement> else <Statement>           
