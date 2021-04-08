@@ -259,4 +259,45 @@ Comment End = '*/'
 <Exp_print> ::= Identifier <Expre> | StringLiteral <More Expressions>
 <Expre> ::= <Array Verification> <More Expressions>          
 <More Expressions> ::= ',' <Exp_print> | <>
+        
+
+!* ================================================== *!
+!*         Declaração de Functions e Procedures       *!
+!* ================================================== *! 
+
+<Decls> ::= <Decl> <Decls> | <>
+
+<Decl> ::= <Function Decl> | <Procedure Decl> | <Proto>
+ 
+<Function Decl> ::= 'function' <Type> Identifier '(' <Params> ')' <Block Func>
+                 
+<Procedure Decl> ::= 'procedure' Identifier '(' <Params> ')' <Block Proc>
+                  
+<Params>     ::= <Param> | <Param> ',' <Params> | <>
+               
+<Param> ::= <Type> Identifier
          
+<Block Func> ::= '{' <Body List> '}'  
+
+<Block Proc> ::= '{' <Body List> '}'
+
+!* ================================================== *!
+!*       Corpo e chamada de Function/Procedures       *!
+!* ================================================== *! 
+         
+<Body List> ::=  <Body> <Body List> | <>
+
+<Body> ::= Identifier 
+         | <Return>
+         | <Proto>
+          
+<Return> ::= 'return' ';' | 'return' Identifier ';'
+
+<Proto> ::= Identifier '(' <Args> ')' ';' 
+
+<Args> ::= <Arg> | <Arg> ',' <Args> | <>
+             
+<Arg> ::= Identifier
+        
+!* ================================================== *!
+
