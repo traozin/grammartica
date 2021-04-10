@@ -297,7 +297,33 @@ Comment End = '*/'
 
 <Args> ::= <Arg> | <Arg> ',' <Args> | <>
              
-<Arg> ::= Identifier
+<Arg> ::= Identifier 
+       
+! ===================================================================
+! Statement
+! =================================================================== 
+
+!Não está finalizado. Adicionnar quebra de linha e verificar se esqueci de algum caso
+<Statement> ::= '{' <StatementsList> '}' | '{' '}' | <SimpleStatament>
+             
+<StatementsList> ::=  <Statements><StatementsList> 
+                     |
+             
+<StatementList> ::=  <SimpleStatament>
+                | <if>
+                | <while> 
+ !               | <Func Decl>
+
+ 
+<SimpleStatament> ::=  <Read Statement>
+                  | <Print Statement> 
+                  | <Expression> 
+                  | <Var Decl> 
+                  | <Proto>
+                  | <Variables>
         
 !* ================================================== *!
+
+                          
+
 
