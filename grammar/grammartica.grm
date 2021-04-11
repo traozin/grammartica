@@ -312,9 +312,9 @@ Comment End = '*/'
 !*         Declaração de Functions e Procedures       *!
 !* ================================================== *! 
 
-<Decls> ::= <Decl> <Decls> | <>
+!<Decls> ::= <Decl> <Decls> | <>
 
-<Decl> ::= <Function Decl> | <Procedure Decl> | <Proto>
+<Decl> ::= <Function Decl> | <Procedure Decl> | <Call Func>
  
 <Function Decl> ::= 'function' <Type> Identifier '(' <Params> ')' <Block Func>
                  
@@ -324,9 +324,9 @@ Comment End = '*/'
                
 <Param> ::= <Type> Identifier
          
-<Block Func> ::= '{' <Body List> '}'  
+<Block Func> ::= '{' <nl Opt> <Body List> '}' <nl Opt> 
 
-<Block Proc> ::= '{' <Body List> '}'
+<Block Proc> ::= '{' <nl Opt> <Body List> '}' <nl Opt>
 
 !* ================================================== *!
 !*       Corpo e chamada de Function/Procedures       *!
@@ -336,15 +336,32 @@ Comment End = '*/'
 
 <Body> ::= Identifier 
          | <Return>
-         | <Proto>
+         | <Call Func>
+         | <Var Decl>
+         !| <Expression>
+         | <Read Statement>
+         | <Print Statement>                   
           
-<Return> ::= 'return' ';' | 'return' Identifier ';'
+<Return> ::= 'return' ';' <nl Opt>
+           | 'return' Identifier ';' <nl Opt>
+           | 'return' 'true' ';' <nl Opt>
+           | 'return' 'false' ';' <nl Opt>
+           | 'return' <Call Func> ';' <nl Opt>
+           | 'return' DecimalLiteral ';' <nl Opt>
+           | 'return' RealLiteral ';' <nl Opt>
+           | 'return' StringLiteral ';' <nl Opt>
+           !| 'return' <Expression> ';' <nl Opt>
 
-<Proto> ::= Identifier '(' <Args> ')' ';' 
+<Call Func> ::= Identifier '(' <Args> ')' ';' <nl Opt>
 
 <Args> ::= <Arg> | <Arg> ',' <Args> | <>
              
-<Arg> ::= Identifier | <Literal>
+<Arg> ::= Identifier 
+        | 'true'
+        | 'false'
+        | <Call Func>
+        | DecimalLiteral
+        | RealLiteral
        
 ! ===================================================================
 ! Statement
@@ -366,7 +383,7 @@ Comment End = '*/'
                   | <Print Statement> 
                   | <Expression> 
                   | <Var Decl> 
-                  | <Proto>
+                  | <Call Func>
                   | <Variables>
         
 !* ================================================== *!
