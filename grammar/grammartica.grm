@@ -4,7 +4,7 @@
 "About"    = 'A short description of the grammar'
            
 "Case Sensitive" = True
-"Start Symbol" = <Start>
+"Start Symbol" = <Init>
 
 ! -------------------------------------------------
 ! Character Sets
@@ -55,19 +55,13 @@ Comment End = '*/'
 
 ! <nl opt> removes blank lines before first statement
 
-<Start>   ::= <nl opt> <Program> <Start> <nl opt>
+<Init> ::= 'procedure' 'start' '{' <Start> '}' <nl opt>
+        
+
+<Start>   ::= <nl opt> <Program> <nl opt> <Start> | <>
            
 
-<Program> ::= <Var Decl>
-           | <Expression>
-           | <Struct Decl>
-           | <Read Statement>
-           | <Print Statement>
-           | <Decl>
-           | <VariableUsage>
-           | <VariableScope>
-           | <Call Func> ';'
-           | <nl opt>
+<Program> ::= <Statement>
            
           
 ! ===================================================================
@@ -372,8 +366,10 @@ Comment End = '*/'
 ! Statement
 ! =================================================================== 
 
+
+
 !Não está finalizado. Adicionar quebra de linha e verificar se esqueci de algum caso
-<Statement> ::= '{' <StatementsList> '}' | '{' '}' | <SimpleStatament>
+<Statement> ::= '{' <nl opt> <StatementsList> <nl opt> '}' | '{' '}' | <nl opt> <SimpleStatament> <nl opt>
              
 <StatementsList> ::=  <Statement> <StatementsList> 
                   |
@@ -381,13 +377,14 @@ Comment End = '*/'
 <StatementList> ::=  <SimpleStatament>
                 | <if>
                 | <while> 
- !               | <Func Decl>
+                !| <Func Decl>
 
  
 <SimpleStatament> ::=  <Read Statement>
                   | <Print Statement> 
                   | <VariableUsage>
                   | <VariableScope>
+                  | <Decl>
                   !| <Expression> 
                   | <Var Decl> 
                   | <Call Func> ';'
