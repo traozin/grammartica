@@ -151,6 +151,7 @@ Comment End = '*/'
                  | <ArrayUsage> '=' <Primary> ';'
                  | <ArrayUsage> '=' <StructUsage> ';'
                  | <ArrayUsage> '=' <ArrayUsage> ';'
+                 
 
       
 <VariableScope> ::= <VariableScopeType> '.' <VariableUsage>
@@ -160,6 +161,8 @@ Comment End = '*/'
                  | <VariableScopeType> '.'  Identifier '=' <VariableScopeType> '.' Identifier ';'
                  | <VariableScopeType> '.'  <ArrayUsage> '=' <VariableScopeType> '.' Identifier ';'
                  | <VariableScopeType> '.'  Identifier '=' <VariableScopeType> '.' <ArrayUsage> ';'
+                 | <StructUsage> '=' <VariableScopeType> '.' Identifier ';'
+                 | <ArrayUsage>  '=' <VariableScopeType> '.' Identifier ';'
 
 
 <VariableScopeType> ::= 'local'
@@ -385,6 +388,7 @@ Comment End = '*/'
                   | <VariableUsage>
                   | <VariableScope>
                   | <Decl>
+                  | <Struct Decl>
                   !| <Expression> 
                   | <Var Decl> 
                   | <Call Func> ';'

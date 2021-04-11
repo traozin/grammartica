@@ -1,3 +1,5 @@
+procedure start {
+
 function int funcaoTeste (int a, real b, string c){
 
 soma(a, b); 
@@ -31,3 +33,7 @@ procedure procedimentoTeste (real a, boolean b){
 
 funcaoTeste(a, b, c);   
 } 
+
+}
+
+

@@ -1,4 +1,6 @@
-﻿// Unica declaração unica linha
+﻿procedure start {
+
+// Unica declaração unica linha
 var { int a; }
 
 // Multipla atribuições unica linha
@@ -127,8 +129,11 @@ a[1] = c[0][2];
 c[0][1] = c[1][0];
 c[0][1] = d[7];
 
-// c[0] = local.a; -> Isso não está funcionando
-// Pessoa.a = local.h; -> Isso não está funcionando
+a = local.c;
+c[0] = local.a; 
+Pessoa.a = local.h; 
 
 local.a = c[0];
 global.b = Pessoa.a;
+
+}
