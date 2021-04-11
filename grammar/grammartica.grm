@@ -66,10 +66,10 @@ Comment End = '*/'
            | <Decl>
            | <VariableUsage>
            | <VariableScope>
+           | <Call Func> ';'
            | <nl opt>
            
           
-
 ! ===================================================================
 ! Types
 ! ===================================================================
@@ -116,8 +116,9 @@ Comment End = '*/'
                
 <VariableDeclarator> ::= Identifier
                       | Identifier '=' <VariableInit>
-                      | Identifier '=' Identifier '(' <VarArgs> ')'
+                      | Identifier '=' <Call Func>
                       | Identifier '=' <StructUsage>
+                      | Identifier '=' <VariableScopeType> '.' Identifier
                       | <ArrayUsage> '=' '{' <VarArgs> '}'
                       | <ArrayUsage> '=' '{' <VarArgs> '}'
                       | <ArrayUsage>
@@ -149,7 +150,7 @@ Comment End = '*/'
 <VariableUsage> ::= <VariableDeclarator> ';'
                  | <StructUsage> ';'
                  | <StructUsage> '=' <VariableInit> ';'
-                 | <StructUsage> '=' Identifier '(' <VarArgs> ')' ';'
+                 | <StructUsage> '=' <Call Func> ';'
                  | <StructUsage> '=' <StructUsage> ';'
                  | <StructUsage> '=' <ArrayUsage> ';'
                  | <ArrayUsage> ';'
@@ -320,7 +321,7 @@ Comment End = '*/'
 
 !<Decls> ::= <Decl> <Decls> | <>
 
-<Decl> ::= <Function Decl> | <Procedure Decl> | <Call Func>
+<Decl> ::= <Function Decl> | <Procedure Decl> 
  
 <Function Decl> ::= 'function' <Type> Identifier '(' <Params> ')' <Block Func>
                  
@@ -330,49 +331,52 @@ Comment End = '*/'
                
 <Param> ::= <Type> Identifier
          
-<Block Func> ::= '{' <nl Opt> <Body List> '}' <nl Opt> 
+<Block Func> ::= '{' <nl Opt> <StatementsList> <nl Opt> <Return> <nl Opt>  '}' <nl Opt> 
 
-<Block Proc> ::= '{' <nl Opt> <Body List> '}' <nl Opt>
+<Block Proc> ::= '{' <nl Opt> <StatementsList> <nl Opt> '}' <nl Opt>
 
 !* ================================================== *!
 !*       Corpo e chamada de Function/Procedures       *!
 !* ================================================== *! 
          
-<Body List> ::=  <Body> <Body List> | <>
+!<Body List> ::=  <Body> <Body List> | <>
 
-<Body> ::= Identifier 
-         | <Return>
-         | <Call Func>
-         | <Var Decl>
-         !| <Expression>
-         | <Read Statement>
-         | <Print Statement>                   
+!<Body> ::= Identifier 
+!         | <Return>
+!         | <Call Func> ';'
+!         | <Var Decl>
+!         !| <Expression>
+!         | <Read Statement>
+!         | <Print Statement>
+!         | <nl opt>                 
           
 <Return> ::= 'return' ';' <nl Opt>
-           | 'return' <Expression> ';' <nl Opt>
+           | 'return' Identifier ';' <nl Opt>
+           | 'return' 'true' ';' <nl Opt>
+           | 'return' 'false' ';' <nl Opt>
            | 'return' <Call Func> ';' <nl Opt>
+           | 'return' DecimalLiteral ';' <nl Opt>
+           | 'return' RealLiteral ';' <nl Opt>
+           | 'return' StringLiteral ';' <nl Opt>
+           !| 'return' <Expression> ';' <nl Opt>
            
 
-<Call Func> ::= Identifier '(' <Args> ')' ';' <nl Opt>
+<Call Func> ::= Identifier '(' <Args> ')'
 
 <Args> ::= <Arg> | <Arg> ',' <Args> | <>
              
-<Arg> ::= Identifier 
-        | 'true'
-        | 'false'
-        | <Call Func>
-        | DecimalLiteral
-        | RealLiteral
+<Arg> ::= <Call Func>
+        | <Primary>
        
 ! ===================================================================
 ! Statement
 ! =================================================================== 
 
-!Não está finalizado. Adicionnar quebra de linha e verificar se esqueci de algum caso
+!Não está finalizado. Adicionar quebra de linha e verificar se esqueci de algum caso
 <Statement> ::= '{' <StatementsList> '}' | '{' '}' | <SimpleStatament>
              
 <StatementsList> ::=  <Statement> <StatementsList> 
-                     |
+                  |
              
 <StatementList> ::=  <SimpleStatament>
                 | <if>
@@ -382,13 +386,11 @@ Comment End = '*/'
  
 <SimpleStatament> ::=  <Read Statement>
                   | <Print Statement> 
-                  | <Expression> 
+                  | <VariableUsage>
+                  | <VariableScope>
+                  !| <Expression> 
                   | <Var Decl> 
-                  | <Call Func>
-                  | <Variables>
+                  | <Call Func> ';'
+                  
         
 !* ================================================== *!
-
-                          
-
-

@@ -1,0 +1,33 @@
+function int funcaoTeste (int a, real b, string c){
+
+soma(a, b); 
+
+return a;
+}
+    
+function string funcaoTeste_1 (int a, real b, int result){
+
+result = soma(a, b);
+
+return 0.333;
+}   
+
+function boolean funcaoTeste_2 (int a, real b){
+
+result = a + b;
+
+return true;
+}   
+
+function string funcaoTeste_1 (int a, real b){
+
+result = soma(a, b);    
+
+return "result";
+}   
+
+procedure procedimentoTeste (real a, boolean b){
+
+
+funcaoTeste(a, b, c);   
+} 
