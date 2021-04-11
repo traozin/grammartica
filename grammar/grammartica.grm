@@ -178,7 +178,7 @@ Comment End = '*/'
 ! Struct  Declaration
 ! ===================================================================
 
-<Struct Decl> ::= typedef struct '{' <Struct Def> '}' Identifier ';'
+<Struct Decl> ::= typedef struct '{' <nl opt> <Struct Def> '}' Identifier ';' | typedef struct extends Identifier '{' <nl opt> <Struct Def> '}' Identifier ';'
 
 <Struct Def> ::= <Var Decl> <nl opt> <Struct Def>
                | <Var Decl> <nl opt>

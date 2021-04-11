@@ -1,0 +1,14 @@
+typedef struct{
+    var{int idade, nome = 5;
+        boolean isTrue = true;
+    }
+} pessoa;
+
+typedef struct extends humano{
+    var{int idade, nome = 5;
+        boolean isTrue = true;
+    }
+} pessoa;
+
+
+pessoa.idade = 7;
