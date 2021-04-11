@@ -1,4 +1,4 @@
-// Unica declaração unica linha
+﻿// Unica declaração unica linha
 var { int a; }
 
 // Multipla atribuições unica linha
@@ -9,9 +9,9 @@ var { int a; string b; real c; }
 
 // Multiplas declaração multi linha
 const { 
-    int a; 
-    string b; 
-    real c; 
+    int a = 1; 
+    string b = "casa"; 
+    real c = 2.7; 
 } 
 
 // Multiplas declarações e atribuições mista multi linha
@@ -21,3 +21,116 @@ var {
     real b, n=1.2;
     boolean t = false, y;
 }
+
+// Declaração recebendo uma outra variável
+var { int a = b; }
+
+// Declaração recebendo retorno de função sem parâmetros 
+var { int a = fun(); }
+
+// Declaração recebendo retorno de função com parâmetros
+var { int a = fun (1, b, 3); }
+
+// Declarações recebendo mais de uma variavel com mais de uma função
+var { 
+    int a = fun (1, b, 3);
+    string b = fun("oi'"), c = novaFun ();
+}
+
+// Declaração recebendo variavel de uma struct
+var { int a = Pessoa.idade; }
+
+// Modificação do valor de variável fora do bloco de declaração
+a = 28;
+
+// Modificação do valor de variável de struct recebendo literal fora do bloco de declaração
+Pessoa.a = 43;
+
+// Modificação do valor de variável de struct recebendo identifier fora do bloco de declaração
+Pessoa.c = a;
+
+
+// Modificação do valor de variável de struct recebendo variável de struct fora do bloco de declaração
+Pessoa.a = Pessoa.b;
+
+
+// Uso do valor de variável de struct 
+Pessoa.a;
+
+
+// Uso do valor de variável
+a;
+
+// Declaração de array com atribuição
+var { int a[2] = {2, 3}; }
+
+// Declaração de multiplos arrays de mesmo tipo com atribuição
+var { int a[2] = {2, 3}, b[3] = {1, 2, 3}; }
+
+// Declaração de multiplos arrays com atribuição
+var { 
+    int a[2] = {2, 3}, b[3] = {1, 2, 3};
+    string c[2] = {"oi", "tchau"};
+}
+
+// Declaração de array sem atribuição
+var { int a[8]; }
+
+// Declaração de multiplos arrays sem atribuição
+var { 
+    int a[2], b[3];
+    string c[2];
+}
+
+// Uso de variável com tipo de escopo local
+local.a;
+
+// Atribuição a variável com tipo de escopo local
+local.a = b;
+
+// Atribuição a variável com tipo de escopo local por uma variável de struct
+local.a = Pessoa.c;
+
+// Uso de variável com tipo de escopo global
+global.a;
+
+// Atribuição a variável com tipo de escopo global
+global.a = 3;
+
+// Atribuição a variável com tipo de escopo global por uma variável de struct
+global.a = Pessoa.a;
+
+// Atribuição a variável de struct por uma variável de struct
+local.a = global.a;
+
+// Atribuição a variável de array
+a[1] = b;
+
+// Atribuição a variável de matriz
+a[2][1] = 4;
+
+// Atribuição a variável de array por uma variável de struct
+a[1] = Pessoa.idade;
+
+// Atribuição a variável de matriz por uma variável de struct
+b[0][1] = Pessoa.cpf;
+
+// Atribuição a variável de struct por uma variável de array
+Pessoa.a = a[0];
+
+// Atribuição a variável de struct por uma variável de matriz
+Pessoa.nome = b[0][2];
+
+a[0] = b[0];
+a[1] = c[0][2];
+
+c[0][1] = c[1][0];
+c[0][1] = d[7];
+
+// c[0] = local.a; -> Isso não está funcionando
+// Pessoa.a = local.h; -> Isso não está funcionando
+
+local.a = c[0];
+global.b = Pessoa.a;
+
+

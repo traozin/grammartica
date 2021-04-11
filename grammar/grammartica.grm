@@ -60,11 +60,14 @@ Comment End = '*/'
 
 <Program> ::= <Var Decl>
            | <Expression>
-           | <nl opt>
-!          | <Func Decl>
            | <Struct Decl>
            | <Read Statement>
            | <Print Statement>
+           | <Decl>
+           | <VariableUsage>
+           | <VariableScope>
+           | <nl opt>
+           
           
 
 ! ===================================================================
@@ -78,14 +81,27 @@ Comment End = '*/'
 <Scalar> ::= int
           | real
           
+<Literal> ::= true
+            | false
+            | DecimalLiteral
+            | RealLiteral
+            | StringLiteral
+            
+<Primary> ::= Identifier
+           | <Literal>
+          
 ! ===================================================================
 ! Variable Declaration
 ! ===================================================================
 
-<Var Decl>  ::= <Mod> '{' <TypedVariable> '}'
-             |  <Mod> '{' <nl opt> <TypedVariable> '}'
-             |  <Mod> '{' <nl opt> <TypedVariable> <nl opt> '}'
-             |  <Mod> '{' <TypedVariable> <nl opt> '}'
+<Var Decl>  ::= var '{' <TypedVariable> '}'
+             |  var '{' <nl opt> <TypedVariable> '}'
+             |  var '{' <nl opt> <TypedVariable> <nl opt> '}'
+             |  var '{' <TypedVariable> <nl opt> '}'
+             | const '{' <TypedConst> '}'
+             | const '{' <nl opt> <TypedConst> '}'
+             | const '{' <nl opt> <TypedConst> <nl opt>  '}'
+             | const '{' <TypedConst> <nl opt> '}'
              
              
 <TypedVariable> ::= <Type> <Variables> ';'
@@ -100,10 +116,60 @@ Comment End = '*/'
                
 <VariableDeclarator> ::= Identifier
                       | Identifier '=' <VariableInit>
-              
-        
+                      | Identifier '=' Identifier '(' <Args> ')'
+                      | Identifier '=' <StructUsage>
+                      | <ArrayUsage> '=' '{' <Args> '}'
+                      | <ArrayUsage> '=' '{' <Args> '}'
+                      | <ArrayUsage>
+                      
+                          
 <VariableInit> ::= <Expression>
-               
+                
+
+<TypedConst> ::= <Type> <Constants> ';'
+              | <TypedConst> <Type> <Constants> ';'
+              | <TypedConst> <nl opt> <Type> <Constants> ';'
+              
+
+<Constants> ::= <ConstDeclarator>
+             | <Constants> ',' <ConstDeclarator>
+             | <Constants> ',' <nl opt> <ConstDeclarator>
+                
+
+<ConstDeclarator> ::= Identifier '=' <Literal>
+
+                   
+<ArrayUsage> ::= Identifier '[' <Primary> ']'
+              | Identifier '[' <Primary> ']' '[' <Primary> ']'
+
+
+<StructUsage> ::= Identifier '.' Identifier
+
+
+<VariableUsage> ::= <VariableDeclarator> ';'
+                 | <StructUsage> ';'
+                 | <StructUsage> '=' <VariableInit> ';'
+                 | <StructUsage> '=' Identifier '(' <Args> ')' ';'
+                 | <StructUsage> '=' <StructUsage> ';'
+                 | <StructUsage> '=' <ArrayUsage> ';'
+                 | <ArrayUsage> ';'
+                 | <ArrayUsage> '=' <Primary> ';'
+                 | <ArrayUsage> '=' <StructUsage> ';'
+                 | <ArrayUsage> '=' <ArrayUsage> ';'
+
+      
+<VariableScope> ::= <VariableScopeType> '.' <VariableUsage>
+                 | <VariableScopeType> '.' Identifier '=' Identifier ';'
+                 | <VariableScopeType> '.' Identifier '=' <StructUsage> ';'
+                 | <VariableScopeType> '.' Identifier '=' <ArrayUsage> ';'
+                 | <VariableScopeType> '.'  Identifier '=' <VariableScopeType> '.' Identifier ';'
+                 | <VariableScopeType> '.'  <ArrayUsage> '=' <VariableScopeType> '.' Identifier ';'
+                 | <VariableScopeType> '.'  Identifier '=' <VariableScopeType> '.' <ArrayUsage> ';'
+
+
+<VariableScopeType> ::= 'local'
+                     | 'global'
+
 
 <Mod> ::= var
        | const         
@@ -185,13 +251,9 @@ Comment End = '*/'
 <PrimaryExpression> ::= <Primary>
                      | '(' <Expression> ')'
                      
-<Primary> ::= <ValidIdentifier>
-           | <Literal>
-           
 
-<ValidIdentifier> ::= Identifier
-                   | <Type> 
-                   
+           
+                                     
 !<Expression> ::= <expressionsLogics> 
 !          |
           
@@ -205,34 +267,19 @@ Comment End = '*/'
 !                  | <expressionsBoolean> 
                    
 !<expressionsBoolean> ::= 'true'|'false'|Identifier   
-                    
-! ===================================================================
-! Literals
-! ===================================================================
-
-<Literal> ::= true
-            | false
-            | DecimalLiteral
-            | RealLiteral
-            | StringLiteral
-
-!Add more values to the rule below - as needed
-
-<Value>       ::= Identifier            
-               |  '(' <Expression> ')'
 
 ! ===================================================================
 ! While Loop
 ! ===================================================================
 
-! <While> ::= 'while' '(' <Expression> ')' <Statement>
+<While> ::= 'while' '(' <Expression> ')' <Statement>
          
 ! ===================================================================
 ! If-Else
 ! ===================================================================
 
-!<if> ::= | if '(' <Expression> ')' <Statement>
-!         | if '(' <Expression> ')' <Statement> else <Statement>  
+<if> ::= | if '(' <Expression> ')' <Statement>
+         | if '(' <Expression> ')' <Statement> else <Statement>  
 
 ! ===================================================================
 ! Read
@@ -297,7 +344,7 @@ Comment End = '*/'
 
 <Args> ::= <Arg> | <Arg> ',' <Args> | <>
              
-<Arg> ::= Identifier 
+<Arg> ::= Identifier | <Literal>
        
 ! ===================================================================
 ! Statement
@@ -306,7 +353,7 @@ Comment End = '*/'
 !Não está finalizado. Adicionnar quebra de linha e verificar se esqueci de algum caso
 <Statement> ::= '{' <StatementsList> '}' | '{' '}' | <SimpleStatament>
              
-<StatementsList> ::=  <Statements><StatementsList> 
+<StatementsList> ::=  <Statement><StatementsList> 
                      |
              
 <StatementList> ::=  <SimpleStatament>
