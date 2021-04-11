@@ -116,10 +116,10 @@ Comment End = '*/'
                
 <VariableDeclarator> ::= Identifier
                       | Identifier '=' <VariableInit>
-                      | Identifier '=' Identifier '(' <Args> ')'
+                      | Identifier '=' Identifier '(' <VarArgs> ')'
                       | Identifier '=' <StructUsage>
-                      | <ArrayUsage> '=' '{' <Args> '}'
-                      | <ArrayUsage> '=' '{' <Args> '}'
+                      | <ArrayUsage> '=' '{' <VarArgs> '}'
+                      | <ArrayUsage> '=' '{' <VarArgs> '}'
                       | <ArrayUsage>
                       
                           
@@ -149,7 +149,7 @@ Comment End = '*/'
 <VariableUsage> ::= <VariableDeclarator> ';'
                  | <StructUsage> ';'
                  | <StructUsage> '=' <VariableInit> ';'
-                 | <StructUsage> '=' Identifier '(' <Args> ')' ';'
+                 | <StructUsage> '=' Identifier '(' <VarArgs> ')' ';'
                  | <StructUsage> '=' <StructUsage> ';'
                  | <StructUsage> '=' <ArrayUsage> ';'
                  | <ArrayUsage> ';'
@@ -172,7 +172,13 @@ Comment End = '*/'
 
 
 <Mod> ::= var
-       | const         
+       | const    
+       
+
+<VarArgs> ::= <VarArg> | <VarArg> ',' <VarArgs> | <>
+             
+<VarArg> ::= Identifier | <Literal>
+             
 
 ! ===================================================================
 ! Struct  Declaration
@@ -343,14 +349,9 @@ Comment End = '*/'
          | <Print Statement>                   
           
 <Return> ::= 'return' ';' <nl Opt>
-           | 'return' Identifier ';' <nl Opt>
-           | 'return' 'true' ';' <nl Opt>
-           | 'return' 'false' ';' <nl Opt>
+           | 'return' <Expression> ';' <nl Opt>
            | 'return' <Call Func> ';' <nl Opt>
-           | 'return' DecimalLiteral ';' <nl Opt>
-           | 'return' RealLiteral ';' <nl Opt>
-           | 'return' StringLiteral ';' <nl Opt>
-           !| 'return' <Expression> ';' <nl Opt>
+           
 
 <Call Func> ::= Identifier '(' <Args> ')' ';' <nl Opt>
 
@@ -370,7 +371,7 @@ Comment End = '*/'
 !Não está finalizado. Adicionnar quebra de linha e verificar se esqueci de algum caso
 <Statement> ::= '{' <StatementsList> '}' | '{' '}' | <SimpleStatament>
              
-<StatementsList> ::=  <Statement><StatementsList> 
+<StatementsList> ::=  <Statement> <StatementsList> 
                      |
              
 <StatementList> ::=  <SimpleStatament>
