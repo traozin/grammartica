@@ -288,28 +288,29 @@ Comment End = '*/'
 ! ===================================================================
 ! Read
 ! ===================================================================
-
-!falta aceitar struct
 <Read Statement>   ::= 'read' '(' <Exp_read> ')'';'
-                   
-<Exp_read> ::= Identifier <Exp_read1>
-<Exp_read1> ::= <Array Verification> <More Readings>            
-<More Readings> ::= ',' <Exp_read> | <>
+
+<Exp_read> ::= Identifier <More Readings> 
+            | <ArrayUsage> <More Readings>                
+            | <StructUsage><More Readings>
+                       
+<More Readings> ::= ',' <Exp_read> 
+                 | <>
                  
-<Array Verification> ::= '['<Array Index>']'<DoubleArray> | <>
-<DoubleArray> ::= '['<Array Index>']' | <>
-<Array Index> ::= DecimalLiteral | Identifier 
- 
+
 
 ! ===================================================================
 ! Print
 ! ===================================================================
-
-!falta aceitar struct
 <Print Statement> ::= 'print' '(' <Exp_print> ')'';' 
-<Exp_print> ::= Identifier <Expre> | StringLiteral <More Expressions>
-<Expre> ::= <Array Verification> <More Expressions>          
-<More Expressions> ::= ',' <Exp_print> | <>
+                   
+<Exp_print> ::= Identifier <More Expressions> 
+             | <ArrayUsage> <More Expressions>  
+             | StringLiteral <More Expressions> 
+             | <StructUsage> <More Expressions>
+                       
+<More Expressions> ::= ',' <Exp_print> 
+                    | <>
         
 
 !* ================================================== *!
