@@ -216,28 +216,28 @@ Comment End = '*/'
 
 <Expression> ::= <OrExpression>
                
-<OrExpression> ::= <OrExpression> '||' <AndExpression>
+<OrExpression> ::= <AndExpression> '||' <OrExpression>
                 | <AndExpression>
 
-<AndExpression> ::= <AndExpression> '&&' <EqualityExpression>
+<AndExpression> ::= <EqualityExpression> '&&' <AndExpression>
                  | <EqualityExpression>
                  
-<EqualityExpression> ::= <EqualityExpression> '==' <CompareExpression>
-                       | <EqualityExpression> '!=' <CompareExpression>
+<EqualityExpression> ::= <CompareExpression> '==' <EqualityExpression> 
+                       | <CompareExpression> '!=' <EqualityExpression> 
                        | <CompareExpression>
                        
-<CompareExpression> ::= <CompareExpression> '<'  <AddExpression>
-                     | <CompareExpression> '>'  <AddExpression>
-                     | <CompareExpression> '<=' <AddExpression>
-                     | <CompareExpression> '>=' <AddExpression>
+<CompareExpression> ::= <AddExpression> '<'  <CompareExpression>
+                     | <AddExpression> '>'  <CompareExpression>
+                     | <AddExpression> '<=' <CompareExpression>
+                     | <AddExpression> '>=' <CompareExpression>
                      | <AddExpression>
         
-<AddExpression> ::= <AddExpression> '+' <MultiplicationExpression>
-                 | <AddExpression> '-' <MultiplicationExpression>
+<AddExpression> ::= <MultiplicationExpression> '+' <AddExpression>
+                 | <MultiplicationExpression> '-' <AddExpression>
                  | <MultiplicationExpression>
 
-<MultiplicationExpression> ::= <MultiplicationExpression> '*' <UnaryExpression> 
-                            | <MultiplicationExpression> '/' <UnaryExpression> 
+<MultiplicationExpression> ::= <UnaryExpression>'*' <MultiplicationExpression>
+                            | <UnaryExpression> '/' <MultiplicationExpression>
                             | <UnaryExpression>
         
 <UnaryExpression> ::= '!' <UnaryExpression>

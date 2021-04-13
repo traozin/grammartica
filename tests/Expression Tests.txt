@@ -1,0 +1,7 @@
+procedure start {
+
+a = 1 + 2 * 5 + 3 * 8;
+
+
+
+}

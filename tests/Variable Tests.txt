@@ -136,4 +136,9 @@ Pessoa.a = local.h;
 local.a = c[0];
 global.b = Pessoa.a;
 
+const {
+    int a = 1;
+    string b = "d";
+}
+
 }
