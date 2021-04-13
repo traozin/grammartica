@@ -98,14 +98,14 @@ Comment End = '*/'
              | const '{' <TypedConst> <nl opt> '}'
              
              
-<TypedVariable> ::= <Type> <Variables> ';'
-                 |  <TypedVariable> <Type> <Variables> ';'
-                 |  <TypedVariable> <nl opt> <Type> <Variables> ';'
+<TypedVariable> ::= <Type> <Variables> ';' <nl opt>
+                 |  <Type> <Variables> ';' <TypedVariable> <nl opt>
+                 |  <Type> <Variables> ';' <nl opt> <TypedVariable> <nl opt>
 
 
-<Variables> ::= <VariableDeclarator>
-              |  <Variables> ',' <VariableDeclarator> 
-              |  <Variables> ',' <nl opt> <VariableDeclarator>
+<Variables> ::=  <VariableDeclarator>
+              |  <VariableDeclarator> ',' <Variables>
+              |  <VariableDeclarator> ',' <nl opt> <Variables>
 
                
 <VariableDeclarator> ::= Identifier
@@ -121,14 +121,14 @@ Comment End = '*/'
 <VariableInit> ::= <Expression>
                 
 
-<TypedConst> ::= <Type> <Constants> ';'
-              | <TypedConst> <Type> <Constants> ';'
-              | <TypedConst> <nl opt> <Type> <Constants> ';'
+<TypedConst> ::= <Type> <Constants> ';' <nl opt>
+              |  <Type> <Constants> ';' <nl opt> <TypedConst> <nl opt>
+              |  <Type> <Constants> ';' <TypedConst> <nl opt>
               
 
-<Constants> ::= <ConstDeclarator>
-             | <Constants> ',' <ConstDeclarator>
-             | <Constants> ',' <nl opt> <ConstDeclarator>
+<Constants> ::= <ConstDeclarator> <nl opt> 
+             |  <ConstDeclarator> ',' <Constants> <nl opt> 
+             |  <ConstDeclarator> ',' <nl opt> <Constants> <nl opt> 
                 
 
 <ConstDeclarator> ::= Identifier '=' <Literal>
