@@ -255,22 +255,8 @@ Comment End = '*/'
 <PrimaryExpression> ::= <Primary>
                      | '(' <Expression> ')'
                      
-
            
-                                     
-!<Expression> ::= <expressionsLogics> 
-!          |
-          
-!<expressionsLogics> ::= <expressionLogic><operetorsLogics><expressionsLogicsAux> 
-!                     | <operetorsLogics><expressionLogic>
-!                     | <expressionLogic>
-                     
-!<expressionsLogicsAux> ::= <expressionsLogics>                 
-!<operetorsLogics> ::= '&&' | '||'
-!<expressionLogic> ::= '!'<expressionsBoolean>
-!                  | <expressionsBoolean> 
-                   
-!<expressionsBoolean> ::= 'true'|'false'|Identifier   
+                                      
 
 ! ===================================================================
 ! While Loop
@@ -282,7 +268,7 @@ Comment End = '*/'
 ! If-Else
 ! ===================================================================
 
-<if> ::= | if '(' <Expression> ')' <Statement>
+<if> ::=  if '(' <Expression> ')' <Statement>
          | if '(' <Expression> ')' <Statement> else <Statement>  
 
 ! ===================================================================
@@ -371,8 +357,6 @@ Comment End = '*/'
 ! =================================================================== 
 
 
-
-!Não está finalizado. Adicionar quebra de linha e verificar se esqueci de algum caso
 <Statement> ::= '{' <nl opt> <StatementsList> <nl opt> '}' | '{' '}' | <nl opt> <SimpleStatament> <nl opt>
              
 <StatementsList> ::=  <Statement> <StatementsList> 
@@ -381,7 +365,6 @@ Comment End = '*/'
 <StatementList> ::=  <SimpleStatament>
                 | <if>
                 | <while> 
-                !| <Func Decl>
 
  
 <SimpleStatament> ::=  <Read Statement>
@@ -390,9 +373,9 @@ Comment End = '*/'
                   | <VariableScope>
                   | <Decl>
                   | <Struct Decl>
-                  !| <Expression> 
                   | <Var Decl> 
                   | <Call Func> ';'
-                  
+                  |<if>
+                  |<While>                  
         
 !* ================================================== *!
